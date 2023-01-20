@@ -18,6 +18,8 @@ function statusUser () {
 function loggedIn (response){
     document.querySelector('.login-container').classList.add('hidden');
 
+    getMessage();
+
     setInterval(statusUser, 5000);
     setInterval (getMessage, 3000);
 }
@@ -70,16 +72,16 @@ function showMessages (messages){
 
         if (type === 'status') {
             messagesSent.innerHTML += 
-            `<div class="message status"><p><span class="time">(${time})</span> 
+            `<div data-test="message" class="message status"><p><span class="time">(${time})</span> 
             <span>${from}</span> ${text}</p></div>`;
         }
         if (type === 'message') {
             messagesSent.innerHTML += 
-            `<div class="message public"><p><span class="time">(${time})</span> <span>${from} 
+            `<div data-test="message" class="message public"><p><span class="time">(${time})</span> <span>${from} 
             </span>para<span> ${to}:</span> ${text}</p></div>`;
         } else if (type === 'private_message' && (to === username || from === username)) {
             messagesSent.innerHTML += `
-            <div class="message private"> <p><span class="time">(${time})</span> 
+            <div data-test="message" class="message private"> <p><span class="time">(${time})</span> 
          <span>${from} </span>reservadamente para<span> ${to}:</span> ${text}</p></div>`;
         }
     }
@@ -90,7 +92,7 @@ function showMessages (messages){
 
 
 function errorInShowingMessages(errorMsg){
-    console.log(errorMsg)
+    console.log(errorMsg);
 }
 
 function getMessage () {
