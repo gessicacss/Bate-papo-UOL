@@ -59,6 +59,10 @@ function login() {
 }
 
 //messages functions
+function refresh() {
+    document.querySelector('.message:last-child').scrollIntoView();
+}
+
 function showMessages (messages){
 
     let messagesSent = document.querySelector('main');
@@ -86,7 +90,7 @@ function showMessages (messages){
          <span>${from} </span>reservadamente para<span> ${to}:</span> ${text}</p></div>`;
         }
     }
-    refresh();
+    refresh()
 }
 
 
