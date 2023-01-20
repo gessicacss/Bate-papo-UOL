@@ -1,8 +1,24 @@
 let username;
 
 //login functions
+function stillLogged (responseStatus) {
+    console.log(`${username} entrou`);
+}
+
+function loggedOut (errorStatus) {
+    window.location.reload(true);
+}
+
+function statusUser () {
+    const status = axios.post('https://mock-api.driven.com.br/api/v6/uol/status', {name:username});
+
+    status.then(stillLogged);
+    status.catch(loggedOut);
+}
 function loggedIn (response){
     document.querySelector('.login-container').classList.add('hidden');
+
+    setInterval(statusUser, 5000);
 }
 
 function loginFailed (error){
