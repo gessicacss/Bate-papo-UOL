@@ -16,19 +16,70 @@
     <title>Bate-Papo UOL</title>
 </head>
 <body>
+    <div class="login-container">
+            <img src="./assets/img/logo 2.png" alt="logo bate-papo UOL">
+            <div class="login-div">
+            <div class="error hidden">Esse nome de usuário já existe</div>
+            <input type="text" class="login-username" placeholder="Digite seu nome">
+            <button class="login-btn" onclick="login(this)">Entrar</button>
+        </div>
+        <div class="loading hidden">
+            <img src="./assets/img/loading.gif">
+            <div>Entrando...</div>
+        </div>
+    </div>
+
+    <aside class="sidebar-container hidden ">
+        <div class="background" onclick="closeSidebar()"></div>
+        <div class="sidebar">
+            <div class="sidebar-content">
+                <div class="titles-sidebar">
+                    <h3>Escolha um contato 
+                        <br>
+                        para enviar mensagem:</h3>
+                </div>
+                <ul class="online-list">  
+                </ul>
+                <div class="titles-sidebar">
+                     <p>Escolha a visibilidade:</p>
+                </div>
+                <ul class="visibility">
+                    <li class="visibility-option" onclick="selectVisibility(this)">
+                        <div class="visibility-part">
+                        <ion-icon name="lock-open-sharp"></ion-icon>
+                        <p class="visibility-type">Público</p>
+                        </div>
+                    </li>     
+                    <li class="visibility-option" onclick="selectVisibility(this)">
+                        <div class="visibility-part">
+                        <ion-icon name="lock-open-sharp"></ion-icon>
+                        <p class="visibility-type">Reservadamente</p>
+                        </div>
+                    </li>     
+                </ul>
+            </div>
+        </div>
+    </aside>
+
     <header>
-        <img src="./assets/img/logo 1.png" alt="logo bate papo uol">
-        <ion-icon name="people-sharp"></ion-icon>
+        <img src="./assets/img/logo 1.png" alt="logo bate-papo UOL">
+        <ion-icon name="people-sharp" onclick="openSidebar(this)"></ion-icon>
     </header>
 
-    <main></main>
+    <main>
+    </main>
 
     <footer class="send-message">
+        <div class="send-message-input">
         <input type="text" class="message" placeholder="Escreva aqui...">
+        </div>
+        <button onclick="SendMessage(this)">
         <ion-icon name="paper-plane-outline"></ion-icon>
+        </button>
     </footer>
 
     <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="./assets/script/script.js"></script>
 </body>
 </html>
