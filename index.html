@@ -20,8 +20,8 @@
             <img src="./assets/img/logo 2.png" alt="logo bate-papo UOL">
             <div class="login-div">
             <div class="error hidden">Esse nome de usuário já existe</div>
-            <input type="text" class="login-username" placeholder="Digite seu nome">
-            <button class="login-btn" onclick="login(this)">Entrar</button>
+            <input data-test="input-name" type="text" class="login-username" placeholder="Digite seu nome">
+            <button data-test="send-name" class="login-btn" onclick="login(this)">Entrar</button>
         </div>
         <div class="loading hidden">
             <img src="./assets/img/loading.gif">
@@ -71,9 +71,9 @@
 
     <footer class="send-message">
         <div class="send-message-input">
-        <input type="text" class="message" placeholder="Escreva aqui...">
+        <input data-test="input-message" type="text" class="message" placeholder="Escreva aqui...">
         </div>
-        <button onclick="SendMessage(this)">
+        <button data-test="send-message" onclick="SendMessage(this)">
         <ion-icon name="paper-plane-outline"></ion-icon>
         </button>
     </footer>
