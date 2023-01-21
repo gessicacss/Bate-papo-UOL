@@ -1,31 +1,33 @@
 let username;
+let receiver = 'todos';
+let type = 'message';
 
 //login functions
-function stillLogged (responseStatus) {
+function stillLogged(responseStatus) {
     console.log(`${username} entrou`);
 }
 
-function loggedOut (errorStatus) {
+function loggedOut(errorStatus) {
     window.location.reload(true);
 }
 
-function statusUser () {
+function statusUser() {
     const status = axios.post('https://mock-api.driven.com.br/api/v6/uol/status', {name:username});
 
     status.then(stillLogged);
     status.catch(loggedOut);
 }
 
-function loggedIn (response){
+function loggedIn(response){
     document.querySelector('.login-container').classList.add('hidden');
 
     getMessage();
 
     setInterval(statusUser, 5000);
-    setInterval (getMessage, 3000);
+    setInterval(getMessage, 3000);
 }
 
-function loginFailed (error){
+function loginFailed(error){
     const statusCode = error.response.status;
 
     if (statusCode === 400) {
@@ -39,7 +41,7 @@ function loginFailed (error){
 function login() {
     username = document.querySelector('.login-div .login-username').value;
 
-    if(username == ""){
+    if(username == ''){
         let errorMessage = document.querySelector('.error');
         errorMessage.classList.remove('hidden');
         errorMessage.textContent = `Coloque um nome de usuário`;
@@ -47,11 +49,8 @@ function login() {
         return;
       }
 
-    let loginScreen = document.querySelector('.login-div');
-    loginScreen.classList.add('hidden');
-
-    let loadingScreen = document.querySelector('.loading');
-    loadingScreen.classList.remove('hidden');
+    document.querySelector('.login-div').classList.add('hidden');
+    document.querySelector('.loading').classList.remove('hidden');
 
     const loginUser = axios.post('https://mock-api.driven.com.br/api/v6/uol/participants', {name: username});
     loginUser.then (loggedIn);
@@ -59,11 +58,7 @@ function login() {
 }
 
 //messages functions
-function refresh() {
-    document.querySelector('.message:last-child').scrollIntoView();
-}
-
-function showMessages (messages){
+function showMessages(messages){
 
     let messagesSent = document.querySelector('main');
 
@@ -77,20 +72,26 @@ function showMessages (messages){
 		let time = messages.data[i].time;
 
         if (type === 'status') {
-            messagesSent.innerHTML += 
-            `<div data-test="message" class="message status"><p><span class="time">(${time})</span> 
-            <span>${from}</span> ${text}</p></div>`;
+            messagesSent.innerHTML += `
+            <div data-test="message" class="message status"><p><span class="time">(${time})</span> 
+            <span>${from}</span> ${text}</p></div>
+            `;
         } else if (type === 'message') {
-            messagesSent.innerHTML += 
-            `<div data-test="message" class="message public"><p><span class="time">(${time})</span> <span>${from} 
-            </span>para<span> ${to}:</span> ${text}</p></div>`;
-        } else if (type === 'private_message' && (to === username || from === username)) {
+            messagesSent.innerHTML += `
+            <div data-test="message" class="message public"><p><span class="time">(${time})</span> <span>${from} 
+            </span>para<span> ${to}:</span> ${text}</p></div>
+            `;
+        } else if (
+            type === 'private_message' && 
+            (to === username || from === username)
+            ) {
             messagesSent.innerHTML += `
             <div data-test="message" class="message private"> <p><span class="time">(${time})</span> 
-         <span>${from} </span>reservadamente para<span> ${to}:</span> ${text}</p></div>`;
+            <span>${from} </span>reservadamente para<span> ${to}:</span> ${text}</p></div>
+            `;
         }
     }
-    refresh()
+    document.querySelector('.message:last-child').scrollIntoView();
 }
 
 
@@ -98,9 +99,32 @@ function errorInShowingMessages(errorMsg){
     console.log(errorMsg);
 }
 
-function getMessage () {
+function getMessage() {
     const getMessages = axios.get ('https://mock-api.driven.com.br/api/v6/uol/messages');
 
     getMessages.then(showMessages);
     getMessages.catch(errorInShowingMessages);
+}
+
+//sending messages
+function errorMessage(error){
+    console.log(error.response.status);
+    windows.location.reload(true);
+}
+
+function SendMessage() {
+    let userMessage = document.querySelector('.send-message .reply').value;
+
+    const msgBody = {
+        from: username,
+        to: receiver,
+        text: userMessage,
+        type: type,
+        };
+
+    const sendingMsg = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', msgBody);
+
+    document.querySelector(".send-message .reply").value = "";
+    sendingMsg.then (res => console.log(res.response.status));
+    sendingMsg.catch (errorMessage);
 }
