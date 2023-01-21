@@ -1,5 +1,5 @@
 let username;
-let receiver = 'todos';
+let receiver = 'Todos';
 let type = 'message';
 
 //login functions
