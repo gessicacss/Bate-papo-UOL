@@ -124,7 +124,8 @@ function SendMessage() {
 
     const sendingMsg = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', msgBody);
 
-    document.querySelector(".send-message .reply").value = "";
+    document.querySelector(".reply").value = "";
+    getMessage();
     sendingMsg.then (res => console.log(res.response.status));
     sendingMsg.catch (errorMessage);
 }

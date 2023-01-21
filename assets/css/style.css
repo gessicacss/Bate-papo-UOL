@@ -211,7 +211,7 @@ footer {
 }
 
 .reply {
-    max-width: 100vw;
+    min-width: 80vw;
     border: none;
     outline: none;
 
