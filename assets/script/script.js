@@ -5,6 +5,7 @@ let visibility = 'Público';
 const fiveSecs = 5000;
 const threeSecs = 3000;
 const tenSecs = 10000;
+const statusError = 400;
 
 //login functions
 function stillLogged() {
@@ -37,7 +38,7 @@ function loggedIn(){
 function loginFailed(error){
     const statusCode = error.response.status;
 
-    if (statusCode === 400) {
+    if (statusCode === statusError) {
         document.querySelector('.login-div').classList.remove('hidden');
         document.querySelector('.error').classList.remove('hidden');
         document.querySelector('.login-username').classList.add('border');
@@ -48,8 +49,8 @@ function loginFailed(error){
 function login() {
     username = document.querySelector('.login-div .login-username').value;
 
-    if(username == ''){
-        let errorMessage = document.querySelector('.error');
+    if(username === ''){
+        const errorMessage = document.querySelector('.error');
         errorMessage.classList.remove('hidden');
         errorMessage.textContent = `Coloque um nome de usuário`;
         document.querySelector('.login-username').classList.add('border');
@@ -67,16 +68,18 @@ function login() {
 //messages functions
 function showMessages(messages){
 
-    let messagesSent = document.querySelector('main');
+    const messagesSent = document.querySelector('main');
 
     messagesSent.innerHTML = '';
 
     for (let i= 0; i < messages.data.length; i++){
-        let from = messages.data[i].from;
-		let to = messages.data[i].to;
-		let text = messages.data[i].text;
-		let type = messages.data[i].type;
-		let time = messages.data[i].time;
+        const message = messages.data;
+
+        const from = message[i].from;
+		const to = message[i].to;
+		const text = message[i].text;
+		const type = message[i].type;
+		const time = message[i].time;
 
         if (type === 'status') {
             messagesSent.innerHTML += `
@@ -89,7 +92,7 @@ function showMessages(messages){
             </span>para<span class="name"> ${to}:</span> ${text}</p></div>
             `;
         } else if (
-            type === 'private_message' && 
+            type === 'private_message' &&
             (to === username || from === username)
             ) {
             messagesSent.innerHTML += `
@@ -119,8 +122,8 @@ function errorMessage(error){
     window.location.reload(true);
 }
 
-function SendMessage() {
-    let userMessage = document.querySelector('.send-message .reply').value;
+function sendMessage() {
+    const userMessage = document.querySelector('.send-message .reply').value;
 
     const msgBody = {
         from: username,
@@ -149,10 +152,10 @@ function closeSidebar(){
 
 //getting participants functions
 function showParticipants(participant){
-    showOnline = document.querySelector('.online-list');
-    
+    const showOnline = document.querySelector('.online-list');
+
     showOnline.innerHTML = '';
-    
+
     showOnline.innerHTML += `
         <li data-test="all" class="contact" onclick="selectContact(this)">
         <div class="contact-part">
@@ -161,10 +164,10 @@ function showParticipants(participant){
         </div>
         <ion-icon data-test="check" class="checkmark selected" name="checkmark"></ion-icon>
         `;
-    
+
     for (let j = 0; j < participant.data.length; j++){
-        let user = participant.data[j].name;
-    
+        const user = participant.data[j].name;
+
         showOnline.innerHTML += `
             <li data-test="participant" class="contact" onclick="selectContact(this)">
             <div class="contact-part">
@@ -178,32 +181,32 @@ function showParticipants(participant){
     
 function getParticipants(){
     const participantsList = axios.get('https://mock-api.driven.com.br/api/v6/uol/participants');
-    
+
     participantsList.then(showParticipants);
     participantsList.catch(error => console.log(error));
 }
 
 //selecting participants functions
 function selectContact(receiverName){
-    let previousReceiver = document.querySelector('.contact .checkmark.selected');
+    const previousReceiver = document.querySelector('.contact .checkmark.selected');
     if (previousReceiver !== null) {
         previousReceiver.classList.remove('selected');
     }
-    
-    let newCheckmark = receiverName.querySelector('.checkmark');
+
+    const newCheckmark = receiverName.querySelector('.checkmark');
     newCheckmark.classList.add('selected');
-    
+
     receiver = receiverName.querySelector('.contact-name').innerHTML;
     showReceiver();
     }
-    
+
 function selectVisibility(visibilityDiv) {
     const previousVisibility = document.querySelector('.visibility-option .checkmark.selected');
     if (previousVisibility !== null) {
         previousVisibility.classList.remove('selected');
     }
 
-    let newVisibility = visibilityDiv.querySelector('.checkmark');
+    const newVisibility = visibilityDiv.querySelector('.checkmark');
     newVisibility.classList.add('selected');
 
     visibility = visibilityDiv.querySelector('.visibility-type').textContent;
@@ -214,11 +217,11 @@ function selectVisibility(visibilityDiv) {
     }
     showReceiver();
 }
-    
+
 function showReceiver() {
     const input = document.querySelector('.send-message-input');
     input.innerHTML = '';
-    
+
     input.innerHTML += `
         <input data-test="input-message" type="text" class="reply" placeholder="Escreva aqui...">
         <div data-test="recipient" class="sending-message-to">
@@ -229,7 +232,6 @@ function showReceiver() {
 //enviar a mensagem ao apertar enter
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter'){
-        SendMessage();
-    };
+        sendMessage();
+    }
 });
-    
