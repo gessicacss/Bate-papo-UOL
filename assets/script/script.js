@@ -90,7 +90,7 @@ function showMessages(messages){
             `;
         } else if (
             msgType === 'private_message' && 
-            (to === username || from === username)
+            (msgTo === username || msgFrom === username)
             ) {
             messagesSent.innerHTML += `
             <div data-test="message" class="message private"> <p><span class="time">(${msgTime})</span> 
@@ -133,7 +133,7 @@ function sendMessage() {
 
     document.querySelector(".reply").value = "";
     getMessage();
-    sendingMsg.then (res => console.log(res.response.status));
+    sendingMsg.then (res => console.log(res));
     sendingMsg.catch (errorMessage);
 }
 
