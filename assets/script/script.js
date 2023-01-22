@@ -1,6 +1,6 @@
 let username;
 let receiver = 'Todos';
-let type = 'message';
+let typeMsg = 'message';
 let visibility = 'Público';
 const fiveSecs = 5000;
 const threeSecs = 3000;
@@ -71,9 +71,10 @@ function showMessages(messages){
     let messagesSent = document.querySelector('main');
 
     messagesSent.innerHTML = '';
+    let messageInfo = messages.data;
 
     for (let i= 0; i < messages.data.length; i++){
-        let message = messages.data[i];
+        let message = messageInfo[i];
 
         let from = message.from;
 		let to = message.to;
@@ -129,7 +130,7 @@ function sendMessage() {
         from: username,
         to: receiver,
         text: userMessage,
-        type: type,
+        type: typeMsg,
         };
 
     const sendingMsg = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', msgBody);
@@ -152,7 +153,7 @@ function closeSidebar(){
 
 //getting participants functions
 function showParticipants(participant){
-    const showOnline = document.querySelector('.online-list');
+    let showOnline = document.querySelector('.online-list');
 
     showOnline.innerHTML = '';
 
@@ -211,9 +212,9 @@ function selectVisibility(visibilityDiv) {
 
     visibility = visibilityDiv.querySelector('.visibility-type').textContent;
     if (visibility === 'Reservadamente'){
-        type = 'private_message';
+        typeMsg = 'private_message';
     } else {
-        type = 'message';
+        typeMsg = 'message';
     }
     showReceiver();
 }
