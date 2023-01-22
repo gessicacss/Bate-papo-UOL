@@ -36,7 +36,7 @@
     </div>
 
     <aside class="sidebar-container hidden ">
-        <div class="background" onclick="closeSidebar()"></div>
+        <div class="background" onclick="closeSidebar(this)"></div>
         <div class="sidebar">
             <div class="sidebar-content">
                 <div class="titles-sidebar">
@@ -55,6 +55,7 @@
                         <ion-icon name="lock-open-sharp"></ion-icon>
                         <p class="visibility-type">Público</p>
                         </div>
+                        <ion-icon class="selected" name="checkmark"></ion-icon>
                     </li>     
                     <li class="visibility-option" onclick="selectVisibility(this)">
                         <div class="visibility-part">

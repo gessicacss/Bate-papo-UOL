@@ -1,6 +1,7 @@
 let username;
 let receiver = 'Todos';
 let type = 'message';
+let visibility = 'Público';
 
 //login functions
 function stillLogged(responseStatus) {
@@ -22,9 +23,11 @@ function loggedIn(response){
     document.querySelector('.login-container').classList.add('hidden');
 
     getMessage();
+    getParticipants();
 
     setInterval(statusUser, 5000);
     setInterval(getMessage, 3000);
+    setInterval(getParticipants, 10000);
 }
 
 function loginFailed(error){
@@ -74,12 +77,12 @@ function showMessages(messages){
         if (type === 'status') {
             messagesSent.innerHTML += `
             <div data-test="message" class="message status"><p><span class="time">(${time})</span> 
-            <span>${from}</span> ${text}</p></div>
+            <span class="name">${from}</span> ${text}</p></div>
             `;
         } else if (type === 'message') {
             messagesSent.innerHTML += `
-            <div data-test="message" class="message public"><p><span class="time">(${time})</span> <span>${from} 
-            </span>para<span> ${to}:</span> ${text}</p></div>
+            <div data-test="message" class="message public"><p><span class="time">(${time})</span> <span class="name">${from} 
+            </span>para<span class="name"> ${to}:</span> ${text}</p></div>
             `;
         } else if (
             type === 'private_message' && 
@@ -87,7 +90,7 @@ function showMessages(messages){
             ) {
             messagesSent.innerHTML += `
             <div data-test="message" class="message private"> <p><span class="time">(${time})</span> 
-            <span>${from} </span>reservadamente para<span> ${to}:</span> ${text}</p></div>
+            <span class="name">${from} </span>reservadamente para<span class="name"> ${to}:</span> ${text}</p></div>
             `;
         }
     }
@@ -128,4 +131,13 @@ function SendMessage() {
     getMessage();
     sendingMsg.then (res => console.log(res.response.status));
     sendingMsg.catch (errorMessage);
+}
+
+//sidebar functions
+function openSidebar () {
+    document.querySelector('.sidebar-container').classList.remove('hidden');
+}
+
+function closeSidebar(){
+    document.querySelector('.sidebar-container').classList.add('hidden');
 }

@@ -105,7 +105,7 @@ body {
 }
 
 .sidebar-content {
-    margin-top:80px;
+    margin-top:30px;
     width:100%;
     display:flex;
     flex-direction: column;
@@ -138,6 +138,11 @@ h3 {
 .sidebar-content ul {
     display:flex;
     flex-direction: column;
+    overflow-x: scroll;
+}
+
+ul::-webkit-scrollbar{
+    display:none;
 }
 
 .sidebar-content li {
@@ -156,8 +161,13 @@ h3 {
     font-size:20px;
 }
 
+.checkmark {
+    opacity:0;
+}
+
 .selected {
     color:#28BB25;
+    opacity:1;
 }
 
 
@@ -250,7 +260,6 @@ main {
 }
 
 .message {
-    width: 100%;
     min-height:40px;
     margin:5px 0;
     display:flex;
@@ -259,6 +268,10 @@ main {
 
     font-size:18px;
     line-height:20px;
+}
+
+.name {
+    max-width:50%;
 }
 
 main div span {
