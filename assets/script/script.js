@@ -5,7 +5,7 @@ let visibility = 'Público';
 const fiveSecs = 5000;
 const threeSecs = 3000;
 const tenSecs = 10000;
-const statusError = 400;
+const errorStatus = 400;
 
 //login functions
 function stillLogged() {
@@ -38,7 +38,7 @@ function loggedIn(){
 function loginFailed(error){
     const statusCode = error.response.status;
 
-    if (statusCode === statusError) {
+    if (statusCode === errorStatus) {
         document.querySelector('.login-div').classList.remove('hidden');
         document.querySelector('.error').classList.remove('hidden');
         document.querySelector('.login-username').classList.add('border');
@@ -50,7 +50,7 @@ function login() {
     username = document.querySelector('.login-div .login-username').value;
 
     if(username === ''){
-        const errorMessage = document.querySelector('.error');
+        let errorMessage = document.querySelector('.error');
         errorMessage.classList.remove('hidden');
         errorMessage.textContent = `Coloque um nome de usuário`;
         document.querySelector('.login-username').classList.add('border');
@@ -67,38 +67,34 @@ function login() {
 
 //messages functions
 function showMessages(messages){
-
     let messagesSent = document.querySelector('main');
 
     messagesSent.innerHTML = '';
-    let messageInfo = messages.data;
 
     for (let i= 0; i < messages.data.length; i++){
-        let message = messageInfo[i];
+        let msgFrom = messages.data[i].from;
+		let msgTo = messages.data[i].to;
+		let txt = messages.data[i].text;
+		let msgType = messages.data[i].type;
+		let msgTime = messages.data[i].time;
 
-        let from = message.from;
-		let to = message.to;
-		let text = message.text;
-		let type = message.type;
-		let time = message.time;
-
-        if (type === 'status') {
+        if (msgType === 'status') {
             messagesSent.innerHTML += `
-            <div data-test="message" class="message status"><p><span class="time">(${time})</span> 
-            <span class="name">${from}</span> ${text}</p></div>
+            <div data-test="message" class="message status"><p><span class="time">(${msgTime})</span> 
+            <span class="name">${msgFrom}</span> ${txt}</p></div>
             `;
-        } else if (type === 'message') {
+        } else if (msgType === 'message') {
             messagesSent.innerHTML += `
-            <div data-test="message" class="message public"><p><span class="time">(${time})</span> <span class="name">${from} 
-            </span>para<span class="name"> ${to}:</span> ${text}</p></div>
+            <div data-test="message" class="message public"><p><span class="time">(${msgTime})</span> <span class="name">${msgFrom} 
+            </span>para<span class="name"> ${msgTo}:</span> ${txt}</p></div>
             `;
         } else if (
-            type === 'private_message' &&
+            msgType === 'private_message' && 
             (to === username || from === username)
             ) {
             messagesSent.innerHTML += `
-            <div data-test="message" class="message private"> <p><span class="time">(${time})</span> 
-            <span class="name">${from} </span>reservadamente para<span class="name"> ${to}:</span> ${text}</p></div>
+            <div data-test="message" class="message private"> <p><span class="time">(${msgTime})</span> 
+            <span class="name">${msgFrom} </span>reservadamente para<span class="name"> ${msgTo}:</span> ${txt}</p></div>
             `;
         }
     }
@@ -135,7 +131,7 @@ function sendMessage() {
 
     const sendingMsg = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', msgBody);
 
-    document.querySelector('.reply').value = '';
+    document.querySelector(".reply").value = "";
     getMessage();
     sendingMsg.then (res => console.log(res.response.status));
     sendingMsg.catch (errorMessage);
@@ -165,7 +161,7 @@ function showParticipants(participant){
         </div>
         <ion-icon data-test="check" class="checkmark selected" name="checkmark"></ion-icon>
         `;
-
+    
     for (let j = 0; j < participant.data.length; j++){
         let user = participant.data[j].name;
 
@@ -189,38 +185,38 @@ function getParticipants(){
 
 //selecting participants functions
 function selectContact(receiverName){
-    const previousReceiver = document.querySelector('.contact .checkmark.selected');
+    let previousReceiver = document.querySelector('.contact .checkmark.selected');
     if (previousReceiver !== null) {
         previousReceiver.classList.remove('selected');
     }
 
-    const newCheckmark = receiverName.querySelector('.checkmark');
+    let newCheckmark = receiverName.querySelector('.checkmark');
     newCheckmark.classList.add('selected');
 
     receiver = receiverName.querySelector('.contact-name').innerHTML;
     showReceiver();
     }
-
+    
 function selectVisibility(visibilityDiv) {
     const previousVisibility = document.querySelector('.visibility-option .checkmark.selected');
     if (previousVisibility !== null) {
         previousVisibility.classList.remove('selected');
     }
 
-    const newVisibility = visibilityDiv.querySelector('.checkmark');
+    let newVisibility = visibilityDiv.querySelector('.checkmark');
     newVisibility.classList.add('selected');
 
     visibility = visibilityDiv.querySelector('.visibility-type').textContent;
-    if (visibility === 'Reservadamente'){
+    if (visibility === "Reservadamente"){
         typeMsg = 'private_message';
     } else {
         typeMsg = 'message';
     }
     showReceiver();
 }
-
+    
 function showReceiver() {
-    let input = document.querySelector('.send-message-input');
+    const input = document.querySelector('.send-message-input');
     input.innerHTML = '';
 
     input.innerHTML += `
@@ -234,5 +230,5 @@ function showReceiver() {
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter'){
         sendMessage();
-    }
+    };
 });
