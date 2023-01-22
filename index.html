@@ -50,14 +50,14 @@
                      <p>Escolha a visibilidade:</p>
                 </div>
                 <ul class="visibility">
-                    <li class="visibility-option" onclick="selectVisibility(this)">
+                    <li data-test="public" class="visibility-option" onclick="selectVisibility(this)">
                         <div class="visibility-part">
                         <ion-icon name="lock-open-sharp"></ion-icon>
                         <p class="visibility-type">Público</p>
                         </div>
-                        <ion-icon class="selected" name="checkmark"></ion-icon>
+                        <ion-icon data-test="check" class="selected" name="checkmark"></ion-icon>
                     </li>     
-                    <li class="visibility-option" onclick="selectVisibility(this)">
+                    <li data-test="private" class="visibility-option" onclick="selectVisibility(this)">
                         <div class="visibility-part">
                         <ion-icon name="lock-open-sharp"></ion-icon>
                         <p class="visibility-type">Reservadamente</p>
@@ -70,7 +70,7 @@
 
     <header>
         <img src="./assets/img/logo 1.png" alt="logo bate-papo UOL">
-        <ion-icon name="people-sharp" onclick="openSidebar(this)"></ion-icon>
+        <ion-icon data-test="open-participants" name="people-sharp" onclick="openSidebar(this)"></ion-icon>
     </header>
 
     <main>

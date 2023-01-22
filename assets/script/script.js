@@ -153,24 +153,24 @@ function showParticipants(participant){
     showOnline.innerHTML = '';
     
     showOnline.innerHTML += `
-        <li class="contact" onclick="selectContact(this)">
+        <li data-test="all" class="contact" onclick="selectContact(this)">
         <div class="contact-part">
         <ion-icon name="people-sharp"></ion-icon>
         <p class="contact-name">Todos</p>
         </div>
-        <ion-icon class="checkmark selected" name="checkmark"></ion-icon>
+        <ion-icon data-test="check" class="checkmark selected" name="checkmark"></ion-icon>
         `;
     
     for (let j = 0; j < participant.data.length; j++){
         let user = participant.data[j].name;
     
         showOnline.innerHTML += `
-            <li class="contact" onclick="selectContact(this)">
+            <li data-test="participant" class="contact" onclick="selectContact(this)">
             <div class="contact-part">
             <ion-icon name="people-sharp"></ion-icon>
             <p class="contact-name">${user}</p>
             </div>
-            <ion-icon class="checkmark" name="checkmark"></ion-icon>
+            <ion-icon data-test="check" class="checkmark" name="checkmark"></ion-icon>
         `;
         }
     }
@@ -181,3 +181,46 @@ function getParticipants(){
     participantsList.then(showParticipants);
     participantsList.catch(error => console.log(error));
 }
+
+//selecting participants functions
+function selectContact(receiverName){
+    let previousReceiver = document.querySelector('.contact .checkmark.selected');
+    if (previousReceiver !== null) {
+        previousReceiver.classList.remove('selected');
+    }
+    
+    newCheckmark = receiverName.querySelector('.checkmark');
+    newCheckmark.classList.add('selected');
+    
+    receiver = receiverName.querySelector('.contact-name').innerHTML;
+    showReceiver();
+    }
+    
+function selectVisibility(visibilityDiv) {
+    const previousVisibility = document.querySelector('.visibility-option .selected');
+    if (previousVisibility !== null) {
+        previousVisibility.remove('selected');
+    }
+    visibilityDiv.innerHTML += `
+        <ion-icon class="selected" name="checkmark"></ion-icon>
+    `;
+    visibility = visibilityDiv.querySelector('.visibility-type').textContent;
+    if (visibility === "Reservadamente"){
+        type = 'private_message';
+    } else {
+        type = 'message';
+    }
+    showReceiver();
+}
+    
+function showReceiver() {
+    const input = document.querySelector('.send-message-input');
+    input.innerHTML = '';
+    
+    input.innerHTML += `
+        <input data-test="input-message" type="text" class="reply" placeholder="Escreva aqui...">
+        <div class="sending-message-to">
+        Enviando para ${receiver} (${visibility})</div>
+    `;
+    }
+    
