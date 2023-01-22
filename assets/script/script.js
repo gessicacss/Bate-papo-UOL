@@ -27,6 +27,7 @@ function loggedIn(){
 
     getMessage();
     getParticipants();
+    showReceiver();
 
     setInterval(statusUser, fiveSecs);
     setInterval(getMessage, threeSecs);
@@ -201,7 +202,7 @@ function selectVisibility(visibilityDiv) {
     if (previousVisibility !== null) {
         previousVisibility.classList.remove('selected');
     }
-    
+
     let newVisibility = visibilityDiv.querySelector('.checkmark');
     newVisibility.classList.add('selected');
 
@@ -223,5 +224,12 @@ function showReceiver() {
         <div data-test="recipient" class="sending-message-to">
         Enviando para ${receiver} (${visibility})</div>
     `;
-    }
+}
+
+//enviar a mensagem ao apertar enter
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter'){
+        SendMessage();
+    };
+});
     
