@@ -68,18 +68,18 @@ function login() {
 //messages functions
 function showMessages(messages){
 
-    const messagesSent = document.querySelector('main');
+    let messagesSent = document.querySelector('main');
 
     messagesSent.innerHTML = '';
 
     for (let i= 0; i < messages.data.length; i++){
-        const message = messages.data;
+        let message = messages.data[i];
 
-        const from = message[i].from;
-		const to = message[i].to;
-		const text = message[i].text;
-		const type = message[i].type;
-		const time = message[i].time;
+        let from = message.from;
+		let to = message.to;
+		let text = message.text;
+		let type = message.type;
+		let time = message.time;
 
         if (type === 'status') {
             messagesSent.innerHTML += `
@@ -123,7 +123,7 @@ function errorMessage(error){
 }
 
 function sendMessage() {
-    const userMessage = document.querySelector('.send-message .reply').value;
+    let userMessage = document.querySelector('.send-message .reply').value;
 
     const msgBody = {
         from: username,
@@ -166,7 +166,7 @@ function showParticipants(participant){
         `;
 
     for (let j = 0; j < participant.data.length; j++){
-        const user = participant.data[j].name;
+        let user = participant.data[j].name;
 
         showOnline.innerHTML += `
             <li data-test="participant" class="contact" onclick="selectContact(this)">
@@ -219,7 +219,7 @@ function selectVisibility(visibilityDiv) {
 }
 
 function showReceiver() {
-    const input = document.querySelector('.send-message-input');
+    let input = document.querySelector('.send-message-input');
     input.innerHTML = '';
 
     input.innerHTML += `
@@ -232,6 +232,6 @@ function showReceiver() {
 //enviar a mensagem ao apertar enter
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter'){
-        getMessage();
+        sendMessage();
     }
 });
