@@ -2,13 +2,16 @@ let username;
 let receiver = 'Todos';
 let type = 'message';
 let visibility = 'Público';
+const fiveSecs = 5000;
+const threeSecs = 3000;
+const tenSecs = 10000;
 
 //login functions
-function stillLogged(responseStatus) {
+function stillLogged() {
     console.log(`${username} entrou`);
 }
 
-function loggedOut(errorStatus) {
+function loggedOut() {
     window.location.reload(true);
 }
 
@@ -19,15 +22,15 @@ function statusUser() {
     status.catch(loggedOut);
 }
 
-function loggedIn(response){
+function loggedIn(){
     document.querySelector('.login-container').classList.add('hidden');
 
     getMessage();
     getParticipants();
 
-    setInterval(statusUser, 5000);
-    setInterval(getMessage, 3000);
-    setInterval(getParticipants, 10000);
+    setInterval(statusUser, fiveSecs);
+    setInterval(getMessage, threeSecs);
+    setInterval(getParticipants, tenSecs);
 }
 
 function loginFailed(error){
@@ -112,7 +115,7 @@ function getMessage() {
 //sending messages
 function errorMessage(error){
     console.log(error.response.status);
-    windows.location.reload(true);
+    window.location.reload(true);
 }
 
 function SendMessage() {
@@ -140,4 +143,41 @@ function openSidebar () {
 
 function closeSidebar(){
     document.querySelector('.sidebar-container').classList.add('hidden');
+}
+
+
+//getting participants functions
+function showParticipants(participant){
+    showOnline = document.querySelector('.online-list');
+    
+    showOnline.innerHTML = '';
+    
+    showOnline.innerHTML += `
+        <li class="contact" onclick="selectContact(this)">
+        <div class="contact-part">
+        <ion-icon name="people-sharp"></ion-icon>
+        <p class="contact-name">Todos</p>
+        </div>
+        <ion-icon class="checkmark selected" name="checkmark"></ion-icon>
+        `;
+    
+    for (let j = 0; j < participant.data.length; j++){
+        let user = participant.data[j].name;
+    
+        showOnline.innerHTML += `
+            <li class="contact" onclick="selectContact(this)">
+            <div class="contact-part">
+            <ion-icon name="people-sharp"></ion-icon>
+            <p class="contact-name">${user}</p>
+            </div>
+            <ion-icon class="checkmark" name="checkmark"></ion-icon>
+        `;
+        }
+    }
+    
+function getParticipants(){
+    const participantsList = axios.get('https://mock-api.driven.com.br/api/v6/uol/participants');
+    
+    participantsList.then(showParticipants);
+    participantsList.catch(error => console.log(error));
 }
