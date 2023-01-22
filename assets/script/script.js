@@ -1,11 +1,10 @@
 let username;
 let receiver = 'Todos';
-let typeMsg = 'message';
+let type = 'message';
 let visibility = 'Público';
 const fiveSecs = 5000;
 const threeSecs = 3000;
 const tenSecs = 10000;
-const errorStatus = 400;
 
 //login functions
 function stillLogged() {
@@ -37,8 +36,9 @@ function loggedIn(){
 
 function loginFailed(error){
     const statusCode = error.response.status;
+    let statusError = 400;
 
-    if (statusCode === errorStatus) {
+    if (statusCode === statusError) {
         document.querySelector('.login-div').classList.remove('hidden');
         document.querySelector('.error').classList.remove('hidden');
         document.querySelector('.login-username').classList.add('border');
@@ -49,7 +49,7 @@ function loginFailed(error){
 function login() {
     username = document.querySelector('.login-div .login-username').value;
 
-    if(username === ''){
+    if(username == ''){
         let errorMessage = document.querySelector('.error');
         errorMessage.classList.remove('hidden');
         errorMessage.textContent = `Coloque um nome de usuário`;
@@ -67,34 +67,35 @@ function login() {
 
 //messages functions
 function showMessages(messages){
+
     let messagesSent = document.querySelector('main');
 
     messagesSent.innerHTML = '';
 
     for (let i= 0; i < messages.data.length; i++){
-        let msgFrom = messages.data[i].from;
-		let msgTo = messages.data[i].to;
-		let txt = messages.data[i].text;
-		let msgType = messages.data[i].type;
-		let msgTime = messages.data[i].time;
+        let from = messages.data[i].from;
+		let to = messages.data[i].to;
+		let text = messages.data[i].text;
+		let type = messages.data[i].type;
+		let time = messages.data[i].time;
 
-        if (msgType === 'status') {
+        if (type === 'status') {
             messagesSent.innerHTML += `
-            <div data-test="message" class="message status"><p><span class="time">(${msgTime})</span> 
-            <span class="name">${msgFrom}</span> ${txt}</p></div>
+            <div data-test="message" class="message status"><p><span class="time">(${time})</span> 
+            <span class="name">${from}</span> ${text}</p></div>
             `;
-        } else if (msgType === 'message') {
+        } else if (type === 'message') {
             messagesSent.innerHTML += `
-            <div data-test="message" class="message public"><p><span class="time">(${msgTime})</span> <span class="name">${msgFrom} 
-            </span>para<span class="name"> ${msgTo}:</span> ${txt}</p></div>
+            <div data-test="message" class="message public"><p><span class="time">(${time})</span> <span class="name">${from} 
+            </span>para<span class="name"> ${to}:</span> ${text}</p></div>
             `;
         } else if (
-            msgType === 'private_message' && 
-            (msgTo === username || msgFrom === username)
+            type === 'private_message' && 
+            (to === username || from === username)
             ) {
             messagesSent.innerHTML += `
-            <div data-test="message" class="message private"> <p><span class="time">(${msgTime})</span> 
-            <span class="name">${msgFrom} </span>reservadamente para<span class="name"> ${msgTo}:</span> ${txt}</p></div>
+            <div data-test="message" class="message private"> <p><span class="time">(${time})</span> 
+            <span class="name">${from} </span>reservadamente para<span class="name"> ${to}:</span> ${text}</p></div>
             `;
         }
     }
@@ -119,21 +120,21 @@ function errorMessage(error){
     window.location.reload(true);
 }
 
-function sendMessage() {
+function SendMessage() {
     let userMessage = document.querySelector('.send-message .reply').value;
 
     const msgBody = {
         from: username,
         to: receiver,
         text: userMessage,
-        type: typeMsg,
+        type: type,
         };
 
     const sendingMsg = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', msgBody);
 
     document.querySelector(".reply").value = "";
     getMessage();
-    sendingMsg.then (res => console.log(res));
+    sendingMsg.then (res => console.log(res.response.status));
     sendingMsg.catch (errorMessage);
 }
 
@@ -149,10 +150,10 @@ function closeSidebar(){
 
 //getting participants functions
 function showParticipants(participant){
-    let showOnline = document.querySelector('.online-list');
-
+    showOnline = document.querySelector('.online-list');
+    
     showOnline.innerHTML = '';
-
+    
     showOnline.innerHTML += `
         <li data-test="all" class="contact" onclick="selectContact(this)">
         <div class="contact-part">
@@ -164,7 +165,7 @@ function showParticipants(participant){
     
     for (let j = 0; j < participant.data.length; j++){
         let user = participant.data[j].name;
-
+    
         showOnline.innerHTML += `
             <li data-test="participant" class="contact" onclick="selectContact(this)">
             <div class="contact-part">
@@ -178,7 +179,7 @@ function showParticipants(participant){
     
 function getParticipants(){
     const participantsList = axios.get('https://mock-api.driven.com.br/api/v6/uol/participants');
-
+    
     participantsList.then(showParticipants);
     participantsList.catch(error => console.log(error));
 }
@@ -189,10 +190,10 @@ function selectContact(receiverName){
     if (previousReceiver !== null) {
         previousReceiver.classList.remove('selected');
     }
-
+    
     let newCheckmark = receiverName.querySelector('.checkmark');
     newCheckmark.classList.add('selected');
-
+    
     receiver = receiverName.querySelector('.contact-name').innerHTML;
     showReceiver();
     }
@@ -208,9 +209,9 @@ function selectVisibility(visibilityDiv) {
 
     visibility = visibilityDiv.querySelector('.visibility-type').textContent;
     if (visibility === "Reservadamente"){
-        typeMsg = 'private_message';
+        type = 'private_message';
     } else {
-        typeMsg = 'message';
+        type = 'message';
     }
     showReceiver();
 }
@@ -218,7 +219,7 @@ function selectVisibility(visibilityDiv) {
 function showReceiver() {
     const input = document.querySelector('.send-message-input');
     input.innerHTML = '';
-
+    
     input.innerHTML += `
         <input data-test="input-message" type="text" class="reply" placeholder="Escreva aqui...">
         <div data-test="recipient" class="sending-message-to">
@@ -229,6 +230,6 @@ function showReceiver() {
 //enviar a mensagem ao apertar enter
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter'){
-        sendMessage();
+        SendMessage();
     };
 });
