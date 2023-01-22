@@ -189,7 +189,7 @@ function selectContact(receiverName){
         previousReceiver.classList.remove('selected');
     }
     
-    newCheckmark = receiverName.querySelector('.checkmark');
+    let newCheckmark = receiverName.querySelector('.checkmark');
     newCheckmark.classList.add('selected');
     
     receiver = receiverName.querySelector('.contact-name').innerHTML;
@@ -197,13 +197,14 @@ function selectContact(receiverName){
     }
     
 function selectVisibility(visibilityDiv) {
-    const previousVisibility = document.querySelector('.visibility-option .selected');
+    const previousVisibility = document.querySelector('.visibility-option .checkmark.selected');
     if (previousVisibility !== null) {
-        previousVisibility.remove('selected');
+        previousVisibility.classList.remove('selected');
     }
-    visibilityDiv.innerHTML += `
-        <ion-icon class="selected" name="checkmark"></ion-icon>
-    `;
+    
+    let newVisibility = visibilityDiv.querySelector('.checkmark');
+    newVisibility.classList.add('selected');
+
     visibility = visibilityDiv.querySelector('.visibility-type').textContent;
     if (visibility === "Reservadamente"){
         type = 'private_message';
