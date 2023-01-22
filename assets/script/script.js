@@ -134,7 +134,7 @@ function sendMessage() {
 
     const sendingMsg = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', msgBody);
 
-    document.querySelector(".reply").value = "";
+    document.querySelector('.reply').value = '';
     getMessage();
     sendingMsg.then (res => console.log(res.response.status));
     sendingMsg.catch (errorMessage);
@@ -210,7 +210,7 @@ function selectVisibility(visibilityDiv) {
     newVisibility.classList.add('selected');
 
     visibility = visibilityDiv.querySelector('.visibility-type').textContent;
-    if (visibility === "Reservadamente"){
+    if (visibility === 'Reservadamente'){
         type = 'private_message';
     } else {
         type = 'message';
