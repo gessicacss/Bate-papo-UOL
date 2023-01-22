@@ -232,6 +232,6 @@ function showReceiver() {
 //enviar a mensagem ao apertar enter
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter'){
-        sendMessage();
+        getMessage();
     }
 });
