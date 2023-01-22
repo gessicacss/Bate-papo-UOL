@@ -219,7 +219,7 @@ function showReceiver() {
     
     input.innerHTML += `
         <input data-test="input-message" type="text" class="reply" placeholder="Escreva aqui...">
-        <div class="sending-message-to">
+        <div data-test="recipient" class="sending-message-to">
         Enviando para ${receiver} (${visibility})</div>
     `;
     }
