@@ -102,16 +102,11 @@ function showMessages(messages){
     document.querySelector('.message:last-child').scrollIntoView();
 }
 
-
-function errorInShowingMessages(errorMsg){
-    console.log(errorMsg);
-}
-
 function getMessage() {
     const getMessages = axios.get ('https://mock-api.driven.com.br/api/v6/uol/messages');
 
     getMessages.then(showMessages);
-    getMessages.catch(errorInShowingMessages);
+    getMessages.catch(err => console.log(err));
 }
 
 //sending messages
