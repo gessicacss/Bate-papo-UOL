@@ -141,13 +141,13 @@ header ion-icon {
     align-items: center;
 }
 
-.titles-sidebar p, h2 {
+.titles-sidebar p, h1 {
     font-size:16px;
     font-weight:700;
     text-align: center;
 }
 
-h2 {
+h1 {
     margin-bottom:20px;
 }
 
@@ -259,13 +259,19 @@ main {
     display:flex;
     align-items: center;
     padding:10px;
+    flex-wrap: wrap;
 
     font-size:18px;
     line-height:20px;
 }
 
+.message p {
+    word-break: break-all;
+}
+
 .name {
     max-width:50%;
+    
 }
 
 main div span {
